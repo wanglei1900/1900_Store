@@ -12,37 +12,54 @@
 		
 		<!-- 导航区域 -->
 		<scroll-view class="navScroll" scroll-x="true" enable-flex="true">
-			<view class="navItem active" v-for="(item,id) in kingKongList" :key="item.id" >{{item.text}}</view>
+			<view class="navItem" @click="handlerNavItem(-1)" :class="{'active':tagIndex === -1}">推荐</view>
+			<view @click="handlerNavItem(index)" class="navItem" :class="{'active':tagIndex===index}"   v-for="(item,index) in kingKongList" :key="item.L1Id" >{{item.text}}</view>
 		</scroll-view>
 		
+		<!-- 内容区 -->
+		<scroll-view scroll-y="true" >
+			<Recommend />
+		</scroll-view>
 	</view>
 </template>
 
 <script>
-	import requests from '../../utils/requests'
+	import {mapActions,mapState} from 'vuex'
+	import Recommend from '@/components/Recommend'
 	export default {
 		data() {
 			return {
-				indexData:{},	//初始化后台数据
+				tagIndex:-1,		// 导航标签点击下标
 			}
+		},
+		components: {
+			Recommend,
 		},
 		mounted() {
-			this.getCategoryList()
+			// 简易，只能用于小项目
+			// this.$store.dispatch('homeStore/getIndexData')
+			
+			// 直接调用...mapActions调用过来的方法,分发actions
+			this.getIndexData()
 		},
 		methods: {
-			// 获取请求数据
-			async getCategoryList(){
-				let result = await requests('/getIndexData')	//小程序写法
-				// let result = await requests('/api/getIndexData')	//H5写法
-				
-				console.log(result)
-				this.indexData = result
-			}
+			// 对象写法
+			/* ...mapActions({
+				// key:value,key:在当前组件定义的方法名,value是从store映射的函数名,
+				// 注意这个value不能随便写,必须是store中已有的actions
+				getIndexData:'homeStore/getIndexData'
+			}), */
+			// 数组写法
+			...mapActions('homeStore',['getIndexData']),
+			// 首页导航标签，点击排他active
+			handlerNavItem(index){
+				this.tagIndex = index
+			},
 		},
 		computed: {
-			// 获取顶部导航标签
+			...mapState('homeStore', ['indexData']),
 			kingKongList() {
-				return this.indexData.kingKongModule.kingKongList
+				return this.indexData.kingKongModule?.kingKongList
 			}
 		},
 	}

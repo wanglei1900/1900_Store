@@ -7,8 +7,8 @@ export default (url, data = {}, method = 'GET') => {
 		uni.request({
 			url: config.host + url,		// 小程序写法
 			// url,	// H5写法
-			data,
 			method,
+			data,
 			success: (res) => {
 				resolve(res.data)
 			},
