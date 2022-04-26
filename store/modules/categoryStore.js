@@ -7,7 +7,7 @@ const state = {
 const actions = {
 	async getCategoryList({commit}){
 		let result = await reqCategoryList()
-		console.log(result);
+		// console.log(result);
 		commit('GETCATEGORYLIST',result)
 	}
 }
