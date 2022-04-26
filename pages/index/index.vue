@@ -13,27 +13,35 @@
 		<!-- 导航区域 -->
 		<scroll-view class="navScroll" scroll-x="true" enable-flex="true">
 			<view class="navItem" @click="handlerNavItem(-1)" :class="{'active':tagIndex === -1}">推荐</view>
-			<view @click="handlerNavItem(index)" class="navItem" :class="{'active':tagIndex===index}"   v-for="(item,index) in kingKongList" :key="item.L1Id" >{{item.text}}</view>
+			<view @click="handlerNavItem(index,item.L1Id)" class="navItem" :class="{'active':tagIndex===index}"   v-for="(item,index) in kingKongList" :key="item.L1Id" >{{item.text}}</view>
 		</scroll-view>
 		
 		<!-- 内容区 -->
 		<scroll-view scroll-y="true" >
-			<Recommend />
+			<!-- 分类列表 -->
+			<CateList v-if="tagIndex!==-1" :nav-id="navId"></CateList>
+			<!-- 推荐 -->
+			<Recommend v-else></Recommend>
 		</scroll-view>
+	
 	</view>
 </template>
 
 <script>
 	import {mapActions,mapState} from 'vuex'
 	import Recommend from '@/components/Recommend'
+	import CateList from '@/components/CateList'
+	
 	export default {
 		data() {
 			return {
 				tagIndex:-1,		// 导航标签点击下标
+				navId:0,		//  导航标签标识
 			}
 		},
 		components: {
 			Recommend,
+			CateList,
 		},
 		mounted() {
 			// 简易，只能用于小项目
@@ -52,8 +60,9 @@
 			// 数组写法
 			...mapActions('homeStore',['getIndexData']),
 			// 首页导航标签，点击排他active
-			handlerNavItem(index){
+			handlerNavItem(index,L1Id){
 				this.tagIndex = index
+				this.navId = L1Id
 			},
 		},
 		computed: {
@@ -65,7 +74,7 @@
 	}
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 	/* 
 		stylus语法：
 		省略大括号
