@@ -4,7 +4,16 @@
 		"navigationBarTitleText": "1900的商城",
 		"navigationBarBackgroundColor": "#ffa801"
 	},
-	"pages": [		
+	"pages": [
+		{
+			"path": "pages/personal/personal",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"enablePullDownRefresh": false
+			}
+		
+		}
+		,
 		{
 		"path": "pages/index/index",
 		"style": {
@@ -31,15 +40,17 @@
 			}
 
 		}, 
-		{
-			"path": "pages/personal/personal",
-			"style": {
-				"navigationBarTitleText": "个人中心",
-				"enablePullDownRefresh": false
-			}
 
-		}
-	],
+		{
+            "path" : "pages/login/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "登录页面",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 
 	"tabBar": {
 		"color": "#555",
